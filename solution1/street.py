@@ -13,6 +13,14 @@ class Street():
         self.maxSpeed = maxSpeed
         self.respawn()
 
+    def run(self, itterations):
+        trafficLeft = np.zeros((itterations, self.gridsize), dtype=np.int32)
+        trafficRight = np.zeros((itterations, self.gridsize), dtype=np.int32)
+        for i in range(itterations):
+            trafficLeft[i,:] = self.oldGridLeft[:]
+            trafficRight[i,:] = self.oldGridRight[:]
+            self.update()
+        
 
     def calcEmptyFieldsRight(self, pos):
         for i in range(1, self.maxSpeed + 1):
@@ -44,10 +52,23 @@ class Street():
                 self.changeToLeft(i)
             else:
                 newSpeed = min(dist, targetSpeed)
+                if (randint(1,100) <= self.dally * 100):
+                    newSpeed = max(newSpeed - 1, 0)
                 self.newGridRight[(i + newSpeed) % self.gridsize] = newSpeed
         
     def changeToLeft(self, pos):
         self.oldGridLeft[pos] = self.oldGridRight[pos]
+    
+    def checkLaneChange(self, pos, targetSpeed):
+        for i in range(0, targetSpeed + 1):
+            if self.newGridRight[(i + pos) % self.gridsize] != Street.EMPTY_CELL:
+                return False
+            if self.oldGridRight[(i + pos) % self.gridsize] != Street.EMPTY_CELL:
+                return False
+        return True
+
+    def changeToRight(self, pos, newSpeed):
+        self.newGridRight[(pos + newSpeed)% self.gridsize] = newSpeed
 
     def updateLeft(self):
         for i in range(self.gridsize):
@@ -56,7 +77,10 @@ class Street():
             dist = self.calcEmptyFieldsLeft(i)
             targetSpeed = min(self.maxSpeed, self.oldGridLeft[i] + 1)
             newSpeed = min(dist, targetSpeed)
-            self.newGridLeft[(i + newSpeed) % self.gridsize] = newSpeed
+            if self.checkLaneChange(i, newSpeed):
+                self.changeToRight(i, newSpeed)
+            else:
+                self.newGridLeft[(i + newSpeed) % self.gridsize] = newSpeed
 
     def getEmptyGrid(self):
         return np.full((self.gridsize), Street.EMPTY_CELL, dtype=np.int32)
