@@ -35,7 +35,8 @@ def saveMagic(leftTraffic, rightTraffic, street, name):
         street.spawnRate,
         street.tunnel,
         street.maxSpeed,
-        street.tunnelSpeedLimit
+        street.tunnelSpeedLimit,
+        street.doubleSpawn
     )
     Logger.log_csv(dataPoints, "metaData")
 

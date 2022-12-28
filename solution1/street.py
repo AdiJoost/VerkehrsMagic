@@ -6,13 +6,14 @@ class Street():
 
     EMPTY_CELL = -1
 
-    def __init__(self, gridsize=500, dally=0.2, spawnRate=0.2, tunnel=None, maxSpeed=5, tunnelSpeedLimit=3):
+    def __init__(self, gridsize=500, dally=0.2, spawnRate=0.2, tunnel=None, maxSpeed=5, tunnelSpeedLimit=3, doubleSpawn=False):
         self.gridsize = gridsize
         self.dally = dally
         self.spawnRate = spawnRate
         self.tunnel = tunnel
         self.tunnelSpeedLimit = tunnelSpeedLimit
         self.maxSpeed = maxSpeed
+        self.doubleSpawn = doubleSpawn
         self.respawn()
 
     def run(self, itterations, plotName=None):
@@ -108,6 +109,11 @@ class Street():
         for i in range(self.gridsize):
             if randint(1,100) <= self.spawnRate * 100:
                 self.oldGridRight[i] = randint(0, self.maxSpeed)
+        if self.doubleSpawn:
+            for i in range(self.gridsize):
+                if randint(1,100) <= self.spawnRate * 100:
+                    self.oldGridRight[i] = randint(0, self.maxSpeed)
+
 
     def to_string(self):
         returnValue = ""

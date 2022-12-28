@@ -3,7 +3,7 @@ from datetime import datetime
 
 class Logger():
     csv_header = \
-    "plotName,gridsize,dally,spawnRate,tunnel,maxSpeed,tunnelSpeedLimit\n"
+    "plotName,gridsize,dally,spawnRate,tunnel,maxSpeed,tunnelSpeedLimit,doubleSpawn\n"
     MAIN_FOLDER = "VerkehrsMagic"
     def __init__(self):
         pass

@@ -11,4 +11,6 @@ for i in range(50):
 
 for i in range(100):
     street = Street(gridsize=500, tunnel=(1,50), spawnRate=float(i)/100)
-    street.run(200, f"run_{i}")
+    street.run(200, f"secondRun_{i}")
+    street = Street(gridsize=500, tunnel=(1,50), spawnRate=float(i)/100, doubleSpawn=True)
+    street.run(200, f"DoubleSpawnSecondRun_{i}")
