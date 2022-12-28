@@ -6,11 +6,12 @@ class Street():
 
     EMPTY_CELL = -1
 
-    def __init__(self, gridsize=500, dally=0.2, spawnRate=0.2, tunnel=None, maxSpeed=5):
+    def __init__(self, gridsize=500, dally=0.2, spawnRate=0.2, tunnel=None, maxSpeed=5, tunnelSpeedLimit=3):
         self.gridsize = gridsize
         self.dally = dally
         self.spawnRate = spawnRate
         self.tunnel = tunnel
+        self.tunnelSpeedLimit = tunnelSpeedLimit
         self.maxSpeed = maxSpeed
         self.respawn()
 
@@ -50,6 +51,9 @@ class Street():
                 continue
             dist = self.calcEmptyFieldsRight(i)
             targetSpeed = min(self.maxSpeed, self.oldGridRight[i] + 1)
+            if self.tunnel:
+                if self.tunnel[0] <= i <= self.tunnel[1]:
+                    targetSpeed = min(targetSpeed, self.tunnelSpeedLimit)
             if (dist < targetSpeed) and self.oldGridLeft[i] == Street.EMPTY_CELL:
                 self.changeToLeft(i)
             else:
@@ -79,6 +83,9 @@ class Street():
             dist = self.calcEmptyFieldsLeft(i)
             targetSpeed = min(self.maxSpeed, self.oldGridLeft[i] + 1)
             newSpeed = min(dist, targetSpeed)
+            if self.tunnel:
+                if self.tunnel[0] <= i <= self.tunnel[1]:
+                    newSpeed = min(newSpeed, self.tunnelSpeedLimit)
             if self.checkLaneChange(i, newSpeed):
                 self.changeToRight(i, newSpeed)
             else:
