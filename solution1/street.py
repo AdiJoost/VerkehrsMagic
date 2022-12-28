@@ -1,6 +1,6 @@
 import numpy as np
 from random import randint
-from pseudocode import showMagic
+from pseudocode import showMagic, saveMagic
 
 class Street():
 
@@ -15,14 +15,17 @@ class Street():
         self.maxSpeed = maxSpeed
         self.respawn()
 
-    def run(self, itterations, plotName):
+    def run(self, itterations, plotName=None):
         trafficLeft = np.zeros((itterations, self.gridsize), dtype=np.int32)
         trafficRight = np.zeros((itterations, self.gridsize), dtype=np.int32)
         for i in range(itterations):
             trafficLeft[i,:] = self.oldGridLeft[:]
             trafficRight[i,:] = self.oldGridRight[:]
             self.update()
-        showMagic(trafficLeft, trafficRight)
+        if not plotName:
+            showMagic(trafficLeft, trafficRight)
+        else:
+            saveMagic(trafficLeft, trafficRight, self, plotName)
         
 
     def calcEmptyFieldsRight(self, pos):
