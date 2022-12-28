@@ -28,6 +28,17 @@ class Street():
         else:
             saveMagic(trafficLeft, trafficRight, self, plotName)
         
+    def runRight(self, itterations, plotName=None):
+        #dont use this
+        trafficRight = np.zeros((itterations, self.gridsize), dtype=np.int32)
+        trafficLeft = np.zeros((itterations, self.gridsize), dtype=np.int32)
+        for i in range(itterations):
+            trafficRight[i,:] = self.oldGridRight[:]
+            self.update()
+        if not plotName:
+            showMagic(trafficLeft, trafficRight)
+        else:
+            saveMagic(trafficLeft, trafficRight, self, plotName)
 
     def calcEmptyFieldsRight(self, pos):
         for i in range(1, self.maxSpeed + 1):
@@ -113,7 +124,6 @@ class Street():
             for i in range(self.gridsize):
                 if randint(1,100) <= self.spawnRate * 100:
                     self.oldGridRight[i] = randint(0, self.maxSpeed)
-
 
     def to_string(self):
         returnValue = ""
