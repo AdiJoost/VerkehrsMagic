@@ -9,5 +9,6 @@ for i in range(50):
     street.update()
     time.sleep(2)"""
 
-
-street.run(50, "firstTry")
+for i in range(100):
+    street = Street(gridsize=500, tunnel=(1,50), spawnRate=float(i)/100)
+    street.run(200, f"run_{i}")

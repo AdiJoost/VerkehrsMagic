@@ -27,7 +27,7 @@ def saveMagic(leftTraffic, rightTraffic, street, name):
     plt.imshow(rightTraffic, cmap='Reds')
     my_path = os.getcwd().split("VerkehrsMagic", 1)[0]
     my_path = os.path.join(my_path, "VerkehrsMagic", "solution1", "plots", name)
-    plt.savefig(my_path)
+    plt.savefig(my_path, dpi=1200)
     dataPoints = (
         name,
         street.gridsize,
