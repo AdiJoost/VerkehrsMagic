@@ -6,7 +6,7 @@ class Street():
 
     EMPTY_CELL = -1
 
-    def __init__(self, gridsize=500, dally=0.2, spawnRate=0.2, tunnel=None, maxSpeed=5, tunnelSpeedLimit=3, doubleSpawn=False):
+    def __init__(self, gridsize=500, dally=0.2, spawnRate=0.2, tunnel=None, maxSpeed=5, tunnelSpeedLimit=3, doubleSpawn=False, doubleDally=False):
         self.gridsize = gridsize
         self.dally = dally
         self.spawnRate = spawnRate
@@ -14,6 +14,7 @@ class Street():
         self.tunnelSpeedLimit = tunnelSpeedLimit
         self.maxSpeed = maxSpeed
         self.doubleSpawn = doubleSpawn
+        self.doubleDally = doubleDally
         self.respawn()
 
     def run(self, itterations, plotName=None):
@@ -97,6 +98,9 @@ class Street():
                 continue
             dist = self.calcEmptyFieldsLeft(i)
             targetSpeed = min(self.maxSpeed, self.oldGridLeft[i] + 1)
+            if self.doubleDally:
+                if (randint(1,100) <= self.dally * 100):
+                    targetSpeed = max(targetSpeed - 1, 0)
             newSpeed = min(dist, targetSpeed)
             if self.tunnel:
                 if self.tunnel[0] <= i <= self.tunnel[1]:
